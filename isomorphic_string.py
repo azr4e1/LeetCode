@@ -53,6 +53,9 @@ class Solution:
     def isIsomorphic(self, s: str, t: str) -> bool:
         return [*map(s.index, s)] == [*map(t.index, t)]
 
+    def isIsomorphic2(self, s: str, t: str) -> bool:
+        return len(set(s)) == len(set(t)) == len(set(zip(s, t)))
+
 
 sol = Solution()
 s = "egg"
