@@ -2,11 +2,12 @@ package palindrome
 
 import (
 	"errors"
+	"fmt"
 	"math"
 )
 
 // Given an integer x, return true if x is a palindrome , and false otherwise.
-func IsPalindrome(x int) bool {
+func IsPalindromeV1(x int) bool {
 	if x < 0 {
 		return false
 	}
@@ -19,6 +20,25 @@ func IsPalindrome(x int) bool {
 	}
 
 	return true
+}
+
+func IsPalindrome(x int) bool {
+	if x >= 0 && x < 10 {
+		return true
+	}
+	if x%10 == 0 || x < 0 {
+		return false
+	}
+	inverted := 0
+	original := x
+
+	for x > 0 {
+		curr := x % 10
+		inverted = 10*inverted + curr
+		x = (x - curr) / 10
+	}
+
+	return original == inverted
 }
 
 func Decompose(x int) []int {
