@@ -11,6 +11,22 @@ type ListNode struct {
 	Next *ListNode
 }
 
+type SumWithRest struct {
+	Sum  int
+	Rest int
+}
+
+func Add(x, y int) SumWithRest {
+	sum := x + y
+	rest := 0
+	if sum >= 10 {
+		sum -= 10
+		rest = 1
+	}
+
+	return SumWithRest{sum, rest}
+}
+
 func NewList(input []int) *ListNode {
 	if input == nil || len(input) == 0 {
 		return &ListNode{}
@@ -54,8 +70,23 @@ func (ln *ListNode) Compose() int {
 }
 
 func AddTwoNumbers(l1, l2 *ListNode) *ListNode {
-	x1, x2 := l1.Compose(), l2.Compose()
-	x3 := x1 + x2
+	newVal := Add(l1.Val, l2.Val)
+	result := ListNode{Val: newVal.Sum}
+	switch {
+	case l1.Next == nil && l2.Next == nil:
+		if newVal.Rest != 0 {
+			result.Next = &ListNode{Val: newVal.Rest, Next: nil}
+		}
+		return &result
+	case l1.Next == nil:
+		l1.Next = &ListNode{}
+	case l2.Next == nil:
+		l2.Next = &ListNode{}
+	}
 
-	return NewList(Decompose(x3))
+	l1.Next.Val += newVal.Rest
+
+	result.Next = AddTwoNumbers(l1.Next, l2.Next)
+
+	return &result
 }

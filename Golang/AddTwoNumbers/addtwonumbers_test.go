@@ -7,7 +7,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestNewList_CreatesASinglyLinkedListInInverseOrder(t *testing.T) {
+func TestNewList_CreatesASinglyLinkedList(t *testing.T) {
 	t.Parallel()
 	input := []int{3, 2, 4, 12, 32, 12, 4, 76, 587, 10}
 	listNodes := make([]atn.ListNode, 10, 10)
@@ -77,7 +77,7 @@ func TestDecomposeTurnsIntegerIntoInversedSequenceOfDigits(t *testing.T) {
 
 }
 
-func TestAddAddsTwoInvertedSinglyLinkedListCorrectly(t *testing.T) {
+func TestAddTwoNumbersAddsTwoInvertedSinglyLinkedListCorrectly(t *testing.T) {
 	t.Parallel()
 	list1 := atn.NewList([]int{2, 3, 1, 4, 2, 4})
 	list2 := atn.NewList([]int{3, 2, 1, 5, 4, 6})
@@ -92,6 +92,31 @@ func TestAddAddsTwoInvertedSinglyLinkedListCorrectly(t *testing.T) {
 
 	want = atn.NewList([]int{5, 5, 2, 9, 6, 0, 9, 9})
 	got = atn.AddTwoNumbers(list1, list2)
+	if !cmp.Equal(want, got) {
+		t.Error(cmp.Diff(want, got))
+	}
+
+	list1 = atn.NewList([]int{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1})
+	list2 = atn.NewList([]int{5, 6, 4})
+
+	want = atn.NewList([]int{6, 6, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1})
+	got = atn.AddTwoNumbers(list1, list2)
+	if !cmp.Equal(want, got) {
+		t.Error(cmp.Diff(want, got))
+	}
+}
+
+func TestAddCreatesASumStructWithCorrectRest(t *testing.T) {
+	t.Parallel()
+	x, y := 6, 9
+	want := atn.SumWithRest{5, 1}
+	got := atn.Add(x, y)
+	if !cmp.Equal(want, got) {
+		t.Error(cmp.Diff(want, got))
+	}
+	x, y = 3, 2
+	want = atn.SumWithRest{5, 0}
+	got = atn.Add(x, y)
 	if !cmp.Equal(want, got) {
 		t.Error(cmp.Diff(want, got))
 	}
