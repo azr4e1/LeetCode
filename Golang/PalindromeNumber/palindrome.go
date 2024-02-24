@@ -2,7 +2,6 @@ package palindrome
 
 import (
 	"errors"
-	"fmt"
 	"math"
 )
 
@@ -23,22 +22,30 @@ func IsPalindromeV1(x int) bool {
 }
 
 func IsPalindrome(x int) bool {
-	if x >= 0 && x < 10 {
+	if x < 0 {
+		return false
+	}
+	if x < 10 {
 		return true
 	}
-	if x%10 == 0 || x < 0 {
+	if x%10 == 0 {
 		return false
 	}
 	inverted := 0
-	original := x
 
 	for x > 0 {
-		curr := x % 10
-		inverted = 10*inverted + curr
-		x = (x - curr) / 10
+		inverted = 10*inverted + x%10
+		x /= 10
+
+		if inverted == x || inverted == x/10 {
+			return true
+		}
+		if inverted > x {
+			return false
+		}
 	}
 
-	return original == inverted
+	return false
 }
 
 func Decompose(x int) []int {
