@@ -1,33 +1,24 @@
 package commpref
 
-import "math"
+import "sort"
 
 // Write a function to find the longest common prefix string amongst an array of st
 // rings.
 // If there is no common prefix, return an empty string "".
 func LongestCommonPrefix(strs []string) string {
-	finalStr := []rune(strs[0])
-	maxLength := len(finalStr)
-	for _, str := range strs {
-		if string(finalStr) == "" {
-			return ""
-		}
-		maxLength = int(math.Min(float64(maxLength), float64(len(str))))
-		finalStr = finalStr[:maxLength]
-		for index, r := range str {
-			if index >= maxLength {
-				break
-			}
-			if r != finalStr[index] {
-				if index == 0 {
-					return ""
-				}
-				finalStr = finalStr[:index]
-				maxLength = index
-				break
-			}
-		}
+	if len(strs) == 1 { // handle only 1 element
+		return strs[0]
 	}
 
-	return string(finalStr)
+	// sort them first, the most different one will be in first and last
+	sort.Strings(strs)
+
+	// compare first and last
+	l := len(strs)
+	for i := range strs[0] {
+		if strs[0][i] != strs[l-1][i] {
+			return strs[0][:i]
+		}
+	}
+	return strs[0]
 }
