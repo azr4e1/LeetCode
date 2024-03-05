@@ -1,25 +1,28 @@
 package waterarea
 
-import (
-	"math"
-)
-
-func MaxArea(height []int) int {
-	maxContainer := 0
-	var curr int
-	for index, el := range height {
-		for index2, el2 := range height[index+1:] {
-			curr = Area(el, el2, index2+1)
-			if curr > maxContainer {
-				maxContainer = curr
-			}
-		}
+func calculateArea(low, high, first, second int) int {
+	if second > first {
+		return first * (high - low)
+	} else {
+		return second * (high - low)
 	}
-	return maxContainer
 }
 
-func Area(Side1, Side2, Dist int) int {
-	minHeight := int(math.Min(float64(Side1), float64(Side2)))
+func MaxArea(height []int) int {
+	low_pointer := 0
+	high_pointer := len(height) - 1
+	max_area := 0
+	for low_pointer < high_pointer {
+		newSum := calculateArea(low_pointer, high_pointer, height[low_pointer], height[high_pointer])
+		if newSum > max_area {
+			max_area = newSum
+		}
+		if height[low_pointer] < height[high_pointer] {
+			low_pointer++
+		} else {
+			high_pointer--
+		}
 
-	return minHeight * Dist
+	}
+	return max_area
 }

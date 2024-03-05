@@ -17,6 +17,7 @@ func TestMaxArea_ReturnsTheMaxAreaGivenArrayOfHeights(t *testing.T) {
 		{[]int{1, 8, 6, 2, 5, 4, 8, 3, 7}, 49},
 		{[]int{2, 5, 3, 6, 4, 5634, 5423, 123, 4, 43, 542, 243, 5432, 45}, 38024},
 		{[]int{1, 1}, 1},
+		{[]int{1, 2}, 1},
 	}
 
 	for no, tc := range testCases {
