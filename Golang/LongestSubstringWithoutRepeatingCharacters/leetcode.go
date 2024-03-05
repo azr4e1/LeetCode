@@ -1,32 +1,33 @@
 package leetcode
 
-func LengthOfLongestSubstring(s string) int {
-	alphabet := make(map[byte]int)
-	var offset int
-	var substring = make([]byte, 0, len(s))
-	var maxLength int
-	for i := 0; i < len(s); i++ {
-		el := s[i]
-		val, ok := alphabet[el]
-		if ok {
-			if len(substring) > maxLength {
-				maxLength = len(substring)
+const MAP_LENGTH = 256
+
+func LengthOfLongestSubstring(substring string) int {
+	currentSubstringHashMap := [MAP_LENGTH]bool{}
+	currentSubstringHashMapPositions := [MAP_LENGTH]int{}
+	sequenceLengthMax := 0
+	sequenceLengthCurrent := 0
+	substringLength := len(substring)
+	for currentSymbolIndex := 0; currentSymbolIndex < substringLength; currentSymbolIndex++ {
+		symbol := substring[currentSymbolIndex]
+		isSymbolExists := currentSubstringHashMap[symbol]
+		if isSymbolExists {
+			if sequenceLengthCurrent > sequenceLengthMax {
+				sequenceLengthMax = sequenceLengthCurrent
 			}
-			alphabet = make(map[byte]int)
-			substring = append(substring, el)
-			substring = substring[val+1:]
-			for j := 0; j < len(substring); j++ {
-				alphabet[substring[j]] = j
-			}
-			offset = i - len(substring) + 1
+			currentSymbolIndex = currentSubstringHashMapPositions[symbol]
+
+			sequenceLengthCurrent = 0
+			currentSubstringHashMap = [MAP_LENGTH]bool{}
 			continue
 		}
-		substring = append(substring, el)
-		alphabet[el] = i - offset
-	}
-	if len(substring) > maxLength {
-		return len(substring)
-	}
+		currentSubstringHashMap[symbol] = true
+		currentSubstringHashMapPositions[symbol] = currentSymbolIndex
 
-	return maxLength
+		sequenceLengthCurrent++
+		if sequenceLengthCurrent > sequenceLengthMax {
+			sequenceLengthMax = sequenceLengthCurrent
+		}
+	}
+	return sequenceLengthMax
 }
