@@ -4,34 +4,34 @@
 // Notice that the solution set must not contain duplicate triplets.
 package leetcode
 
-import (
-	"fmt"
-	"slices"
-)
+import "slices"
+import "fmt"
 
-func ThreeSum(input []int) [][]int {
+func ThreeSum(nums []int) [][]int {
 	result := [][]int{}
-	for i := 0; i < len(input)-1; i++ {
-		pairs := TwoSum(input[i+1:], -input[i])
-		for _, el := range pairs {
-			finalSlice := append(el, input[i])
-			slices.Sort(finalSlice)
-			if !slices.ContainsFunc(result, func(sl []int) bool {
-				if len(sl) != len(finalSlice) {
-					return false
+	tracker := make(map[[3]int]bool)
+
+	for i := 0; i < len(nums)-2; i++ {
+		ledger := make(map[int]int)
+		el := nums[i]
+		for _, num := range nums[i+1:] {
+			val, ok := ledger[num]
+			if ok {
+				finalArray := [3]int{el, val, num}
+				finalSlice := finalArray[:]
+				slices.Sort(finalSlice)
+				_, ok2 := tracker[finalArray]
+				if ok2 {
+					continue
 				}
-				for j := 0; j < len(sl); j++ {
-					if sl[j] != finalSlice[j] {
-						return false
-					}
-				}
-				return true
-			},
-			) {
 				result = append(result, finalSlice)
+				tracker[finalArray] = true
+				continue
 			}
+			ledger[-el-num] = num
 		}
 	}
+	fmt.Println(result)
 	return result
 }
 
