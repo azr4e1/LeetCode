@@ -6,29 +6,18 @@ package leetcode
 
 // The final sorted array should not be returned by the function, but instead be stored inside the array nums1. To accommodate this, nums1 has a length of m + n, where the first m elements denote the elements that should be merged, and the last n elements are set to 0 and should be ignored. nums2 has a length of n.
 func Merge(nums1, nums2 []int, m, n int) {
-	helper := make([]int, m+n)
-	var i, j int
-	for k := 0; i < m || j < n; k++ {
-		if i == m {
-			helper[k] = nums2[j]
-			j++
-			continue
+	var ptr1, ptr2, ptr3 int = m - 1, n - 1, m + n - 1
+	for ; ptr1 >= 0 && ptr2 >= 0; ptr3-- {
+		if nums2[ptr2] >= nums1[ptr1] {
+			nums1[ptr3] = nums2[ptr2]
+			ptr2--
+		} else {
+			nums1[ptr3] = nums1[ptr1]
+			ptr1--
 		}
-		if j == n {
-			helper[k] = nums1[i]
-			i++
-			continue
-		}
-		if nums1[i] < nums2[j] {
-			helper[k] = nums1[i]
-			i++
-			continue
-		}
-		helper[k] = nums2[j]
-		j++
 	}
 
-	for k := 0; k < m+n; k++ {
-		nums1[k] = helper[k]
+	if ptr2 >= 0 {
+		copy(nums1[:ptr3+1], nums2[:ptr2+1])
 	}
 }
