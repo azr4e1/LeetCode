@@ -1,17 +1,12 @@
 package leetcode
 
 func RemoveElement(nums []int, val int) int {
-	var offset, length int = 0, len(nums)
-	if length == 0 {
-		return 0
-	}
-	for i := 0; i < len(nums); i++ {
-		if nums[i] == val {
-			offset++
-			length--
-			continue
+	i := 0
+	for _, v := range nums {
+		if v != val {
+			nums[i] = v
+			i++
 		}
-		nums[i-offset] = nums[i]
 	}
-	return length
+	return i
 }
