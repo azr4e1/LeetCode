@@ -15,6 +15,7 @@ func TestMajorityElement_ReturnsTheCorrectResult(t *testing.T) {
 		{Question: []int{3, 2, 3}, Answer: 3},
 		{Question: []int{2, 2, 1, 1, 1, 2, 2}, Answer: 2},
 		{Question: []int{-1, 1, 1, 1, 2, 1}, Answer: 1},
+		{Question: []int{1, 1, 1, 2, 2, 2, 3, 1}, Answer: 1},
 	}
 
 	for _, tc := range testCases {

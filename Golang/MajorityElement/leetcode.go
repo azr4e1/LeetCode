@@ -2,20 +2,26 @@ package leetcode
 
 import "fmt"
 
+type Vote struct {
+	Candidate int
+	Vote      int
+}
+
 func MajorityElement(nums []int) int {
-	var maj int
-	var greatest int
-	var counts = make(map[int]int)
-	for _, n := range nums {
-		counts[n]++
-		if counts[n] > greatest {
-			maj = n
-			greatest = counts[n]
+	vote := new(Vote)
+	for _, v := range nums {
+		fmt.Println(vote)
+		if vote.Vote == 0 {
+			vote.Candidate = v
+			vote.Vote = 1
+			continue
 		}
-		if greatest >= len(nums)/2+1 {
-			break
+		if v == vote.Candidate {
+			vote.Vote++
+		} else {
+			vote.Vote--
 		}
 	}
-	fmt.Println(counts)
-	return maj
+
+	return vote.Candidate
 }
