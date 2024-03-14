@@ -6,7 +6,7 @@ func CanJump(jumps []int) bool {
 		return true
 	}
 	var result bool
-	for i := 1; i <= jump && i < len(jumps); i++ {
+	for i := min(jump, len(jumps)-1); i >= 1; i-- {
 		result = CanJump(jumps[i:])
 		if result {
 			return true
