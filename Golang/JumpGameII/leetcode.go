@@ -27,3 +27,22 @@ func Jump(nums []int) int {
 	cache := make(map[int]int)
 	return jumpCache(nums, &cache)
 }
+
+// Better solution
+func jump(nums []int) int {
+
+	n := len(nums)
+	jumps := 0
+	currentEnd := 0
+	farthest := 0
+
+	for i := 0; i < n-1; i++ {
+		farthest = max(farthest, i+nums[i])
+		if i == currentEnd {
+			jumps++
+			currentEnd = farthest
+		}
+	}
+
+	return jumps
+}
