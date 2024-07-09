@@ -5,68 +5,56 @@ package leetcode
 
 import "fmt"
 
-type Consecutive struct {
+type Chain struct {
 	start, end int
 }
 
-func (c Consecutive) isAttachable(d Consecutive) bool {
-	if c.start-1 <= d.end {
-		return true
-	}
-	if c.end+1 >= d.start {
-		return true
-	}
-
-	return false
+func (c *Chain) String() string {
+	return fmt.Sprintf("[%d %d]", c.start, c.end)
 }
 
-func (c *Consecutive) attach(d Consecutive) {
-	if c.start-1 <= d.end {
+func (c *Chain) Concat(d Chain) {
+	switch {
+	case d.start <= c.start && d.end >= c.end:
 		c.start = d.start
-	}
-	if c.end+1 >= d.start {
+		c.end = d.end
+	case d.start >= c.start && d.end <= c.end:
+		// do nothing
+	case d.start <= c.start && d.end >= c.start-1:
+		c.start = d.start
+	case d.start <= c.end+1 && d.end >= c.end:
 		c.end = d.end
 	}
 }
 
-func (c Consecutive) len() int {
+func (c Chain) Len() int {
 	return c.end - c.start + 1
 }
 
-func insert(c Consecutive, mapping map[int]Consecutive) map[int]Consecutive {
-	start, end := c.start, c.end
-	d, ok := mapping[start-1]
-	if ok {
-		d.attach(c)
-		delete(mapping, start)
-		return insert(d, mapping)
-	}
-	e, ok := mapping[end+1]
-	if ok {
-		e.attach(c)
-		delete(mapping, end)
-		return insert(e, mapping)
-	}
-	mapping[start] = c
-	mapping[end] = c
-
-	return mapping
-}
-
 func LongestConsecutive(nums []int) int {
-	consecutiveSeq := make(map[int]Consecutive)
-	for _, el := range nums {
-		fmt.Println(consecutiveSeq)
-		c := Consecutive{start: el, end: el}
-		consecutiveSeq = insert(c, consecutiveSeq)
+	var seen = make(map[int]*Chain)
+	for _, e := range nums {
+		chain := Chain{start: e, end: e}
+		seen[e] = &chain
 	}
 
 	maxLen := 0
-	for _, c := range consecutiveSeq {
-		if length := c.len(); length >= maxLen {
-			maxLen = length
+	for _, v := range seen {
+		el := v.start - 1
+		c, ok := seen[el]
+		if ok {
+			v.Concat(*c)
+			seen[el] = v
+		}
+		el = v.end + 1
+		c, ok = seen[el]
+		if ok {
+			v.Concat(*c)
+			seen[el] = v
+		}
+		if newLen := v.Len(); newLen > maxLen {
+			maxLen = newLen
 		}
 	}
-
 	return maxLen
 }

@@ -21,6 +21,10 @@ func TestReturnsCorrectResult(t *testing.T) {
 			Input:  []int{0, 3, 7, 2, 5, 8, 4, 6, 0, 1},
 			Answer: 9,
 		},
+		{
+			Input:  []int{},
+			Answer: 0,
+		},
 	}
 
 	for i, tc := range testCases {
