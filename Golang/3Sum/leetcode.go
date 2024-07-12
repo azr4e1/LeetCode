@@ -45,21 +45,5 @@ func ThreeSum(nums []int) [][]int {
 		}
 	}
 
-	fmt.Println(res)
 	return res
-}
-
-func TwoSum(input []int, sum int) [][]int {
-	ledger := make(map[int]int)
-	result := [][]int{}
-	for _, num := range input {
-		val, ok := ledger[num]
-		if ok {
-			result = append(result, []int{val, num})
-			continue
-		}
-		ledger[sum-num] = num
-	}
-
-	return result
 }
